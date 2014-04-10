@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function loadXMLDoc()
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+		//document.getElementById("current_count").innerHTML = count;
+    }
+  }
+xmlhttp.open("POST","https://besnjbbex1001.nam.nsroot.net:7654/test_json_request",false);
+xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+xmlhttp.send('{"method":"GET","URL":"https://besnjbbex1001.nam.nsroot.net:4000/2k"}');
+}
+
+function runTheTest()
+{
+	var elapsed_times = new Array();
+	var count = 5;
+	var sum = 0;
+	for(var i = 0; i < count; i++) 
+	{
+		var start = new Date().getTime();
+		loadXMLDoc();
+		var end = new Date().getTime();
+		var time = end - start;
+		elapsed_times[i] = time;
+		sum += time;
+	}
+	var average_time = sum/count;
+	var target_page = "https://besnjbbex1001.nam.nsroot.net:4000/2k";
+	document.getElementById("target_page").innerHTML = target_page;
+	document.getElementById("sumTime").innerHTML = sum;
+	document.getElementById("count").innerHTML = count;
+	document.getElementById("executionTime").innerHTML = average_time;
+}
+</script>
+</head>
+<body>
+<div><h2>target page: <span id="target_page"></span></h2></div>
+<div><h2>count: <span id="count"></span></h2></div>
+<div><h2>total execution time: <span id="sumTime"></span></h2></div>
+<div><h2>average execution time: <span id="executionTime"></span></h2></div>
+<button type="button" onclick="runTheTest()">Change Content</button>
+
+</body>
+</html>

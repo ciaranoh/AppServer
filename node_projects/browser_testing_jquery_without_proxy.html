@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <script src="jquery-ui-1.10.4/jquery-1.10.2.js"></script>
+        <script src="dist/js/bootstrap.js"></script>
+        <link rel="stylesheet" href="dist/css/bootstrap.css">
+        <style>
+            body {
+                margin: 50px;
+            }
+            .container {
+                margin-top: 30px;
+                width: 1000px;
+            }
+        </style>
+        <script>
+            var testIndex = -1;
+            var repeatCount = 100;
+            var target_page = "https://besnjbbex1001.nam.nsroot.net:4000/10k";
+            var total_time = 0;
+            var used_time_array = new Array();
+            var progress;
+            var method = "GET";
+            function start() {
+                progress = setInterval(loadXMLDoc, 1500);
+            }
+
+            function finish() {
+                clearInterval(progress);
+                $('.progress').removeClass('active');
+                var average_time = total_time/repeatCount;
+                // calculate the standard deviation:
+                var square_sum = 0;
+                for (var i = 0; i < used_time_array.length; i ++) {
+                    square_sum += (used_time_array[i] - average_time)*(used_time_array[i] - average_time);
+                }
+                var std_dev = Math.sqrt(square_sum/(used_time_array.length));
+                $("#target_page").html(target_page);
+                $("#sumTime").html(total_time);
+                $("#count").html(repeatCount);
+                $("#executionTime").html(average_time);
+                $("#stddev").html(std_dev);
+            }
+
+            function loadXMLDoc()
+            {
+                testIndex++;
+                if (testIndex < repeatCount) {
+                    var start_time;
+                    var end_time;
+                    $.ajax({
+                        url: target_page,
+                        type: method,
+                        async: false,
+                        beforeSend: function(request)
+                        {
+                            start_time = new Date().getTime();
+                        },
+                        success: function(data)
+                        {
+                            end_time = new Date().getTime();
+                            var used_time = end_time - start_time;
+                            used_time_array[testIndex] = used_time;
+                            total_time += used_time
+                            $("#tracking").append("+");
+                            var $bar = $('.bar');
+                            $bar.width((testIndex+1)*(1000/repeatCount));
+                            $bar.text(parseInt((testIndex+1)/repeatCount*100) + "%");
+                        }
+                    }).done(function(data) {
+                        //$("#response_part").html(data);
+                    });
+                }else {
+                    finish();
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="progress progress-striped active">
+                <div class="bar" style="width: 0%;"></div>
+            </div>
+        </div>
+        <div><h4 class="text-info">Tracking: <span id="tracking"></span></h4></div>
+        <div><h4 class="text-info">Target page: <span id="target_page"></span></h4></div>
+        <div><h4 class="text-info">Count: <span id="count"></span></h4></div>
+        <div><h4 class="text-info">Total execution time (ms): <span id="sumTime"></span></h4></div>
+        <div><h4 class="text-info">Average execution time (ms): <span id="executionTime"></span></h4></div>
+        <div><h4 class="text-info">Standard deviation (ms): <span id="stddev"></span></h4></div>
+        <button class="btn btn-large btn-block" type="button" onclick="start()">Load Testing</button>
+		<p id="response_part"></p>
+    </body>
+</html>

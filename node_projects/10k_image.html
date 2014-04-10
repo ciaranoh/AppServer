@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+var startTime = new Date().getTime();
+var img = new Image();
+img.onload = function() {
+    var loadtime = new Date().getTime() - startTime;
+    console.log("image took " + loadtime + "ms to load (in JS)");
+};
+img.src = "https://besnjbbex1001.nam.nsroot.net:4000/images/10k.png";
+
+var startTime = new Date().getTime();
+function loadImage() {
+    var loadtime = new Date().getTime() - startTime;
+    document.getElementById("loadTime").innerHTML= loadtime;
+    console.log("image took " + loadtime + "ms to load");
+};
+</script>
+<style>
+img {
+	height:200px;
+	width:200px;
+}
+h1 {
+	color:red;
+}
+</style>
+</head>
+<body>
+<img id="image" src="https://besnjbbex1001.nam.nsroot.net:4000/images/10k.png" onload="loadImage()">
+<div><h1 id="loadTime"></h1></div>
+</body>
+</html>

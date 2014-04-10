@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <script src="jquery-ui-1.10.4/jquery-1.10.2.js"></script>
+        <script src="dist/js/bootstrap.js"></script>
+        <link rel="stylesheet" href="dist/css/bootstrap.css">
+        <style>
+            body {
+                margin: 50px;
+            }
+            .container {
+                margin-top: 30px;
+                width: 800px;
+            }
+        </style>
+        <script>
+            var testIndex = -1;
+            var repeatCount = 10;
+            var target_page = "https://besnjbbex1001.nam.nsroot.net:4000/2k";
+            var total_time = 0;
+            var used_time_array = new Array();
+            var progress;
+			var body;
+			var method = "GET";
+			
+            function start() {
+				var target_page_to_test = $('#target_page_to_test').val();
+				if (target_page_to_test != '') {
+					target_page = target_page_to_test;
+				}
+				var how_many_tests_to_run = $('#how_many_tests_to_run').val();
+				if (how_many_tests_to_run != '') {
+					repeatCount = how_many_tests_to_run;
+				}
+				var http_method = $('#http_method').val();
+				if (http_method != '') {
+					method = http_method;
+				}
+				body = '{"method":"'+ method +'","URL":"'+ target_page +'"}';
+                progress = setInterval(loadXMLDoc, 1200);
+            }
+
+            function finish() {
+                clearInterval(progress);
+                $('.progress').removeClass('active');
+                var average_time = total_time/repeatCount;
+				// calculate the standard deviation:
+				var square_sum = 0;
+				for (var i = 0; i < used_time_array.length; i ++) {
+					square_sum += (used_time_array[i] - average_time)*(used_time_array[i] - average_time)
+				}
+				var std_dev = Math.sqrt(square_sum/(used_time_array.length))
+                $("#target_page").html(target_page);
+                $("#sumTime").html(total_time);
+                $("#count").html(repeatCount);
+                $("#executionTime").html(average_time);
+				$("#stddev").html(std_dev); 
+            }
+
+            function loadXMLDoc()
+            {
+                testIndex++;
+                if (testIndex < repeatCount) {
+                    var start_time;
+                    var end_time;
+                    $.ajax({
+                        url: 'https://besnjbbex1001.nam.nsroot.net:7654/test_json_request',
+                        type: 'POST',
+                        headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                        data: body,
+                        async: false,
+                        beforeSend: function(request)
+                        {
+                            start_time = new Date().getTime();
+                        },
+                        success: function(data)
+                        {
+                            end_time = new Date().getTime();
+                            var used_time = end_time - start_time;
+                            used_time_array[testIndex] = used_time;
+                            total_time += used_time
+                            $("#tracking").append("+");
+                            var $bar = $('.bar');
+                            $bar.width((testIndex+1)*(800/repeatCount));
+                            $bar.text(parseInt((testIndex+1)/repeatCount*100) + "%");
+                        }
+                    });
+                }else {
+                    finish();
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="progress progress-striped active">
+                <div class="bar" style="width: 0%;"></div>
+            </div>
+        </div>
+		<div><h4 class="text-info">Tracking: <span id="tracking"></span></h4></div>
+        <div><h4 class="text-info">Target page: <span id="target_page"></span></h4></div>
+        <div><h4 class="text-info">Count: <span id="count"></span></h4></div>
+        <div><h4 class="text-info">Total execution time (ms): <span id="sumTime"></span></h4></div>
+        <div><h4 class="text-info">Average execution time (ms): <span id="executionTime"></span></h4></div>
+		<div><h4 class="text-info">Standard deviation (ms): <span id="stddev"></span></h4></div>
+		<table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td class="text-error span4">Target page: (default: "https://besnjbbex1001.nam.nsroot.net:4000/2k")</td>
+                  <td class="span8"><input class="input-xxlarge" type="text" id="target_page_to_test"/></td>
+                </tr>
+                <tr>
+                  <td class="text-error">Http method: (default: "GET")</td>
+                  <td><input class="input-small" type="text" id="http_method"/></td>
+                </tr>
+                <tr>
+                  <td class="text-error">Run count: (default: "10")</td>
+                  <td><input class="input-small" type="text" id="how_many_tests_to_run"/></td>
+                </tr>
+              </tbody>
+            </table>	
+		<h5 class="text-error">(Leave textfields blink to run default testing)</h5>		
+        <button class="btn btn-large btn-block" type="button" onclick="start()">Load Testing</button>		
+    </body>
+</html>

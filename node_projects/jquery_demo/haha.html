@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title></title>
+        <link rel="stylesheet"  href="../jquery_demo/jquery.mobile-1.2.0/jquery.mobile-1.2.0.css" />  
+        <link rel="stylesheet" href="../jquery_demo/jquery.mobile-1.2.0/demos/docs/_assets/css/jqm-docs.css"/>
+        <script src="../jquery_demo/jquery.mobile-1.2.0/jquery-1.7.1.min.js"></script>
+        <script src="../jquery_demo/jquery.mobile-1.2.0/demos/docs/_assets/js/jqm-docs.js"></script>
+        <script type="text/javascript">
+            $(document).bind("mobileinit", function(){
+                $.mobile.page.prototype.options.addBackBtn = true;
+                $.mobile.listview._createSubPages = true;
+            });
+        </script> 
+        <script src="../jquery_demo/jquery.mobile-1.2.0/jquery.mobile-1.2.0.js"></script>
+    </head>
+    <body>
+        <div data-role="page">
+            <div data-role="content">
+                <ul data-role="listview">
+                    <li>
+<!--                        <img src="../jquery_demo/images/kevin.jpg" />-->
+                        <h3>Yuwei Xia</h3>
+                        <img src="../jquery_demo/images/kevin.jpg" />
+                        <p>This is Kevin's space.</p>
+
+                        <ul>
+                            <li><div>Email</div>
+                                <span class="ui-li-count">6</span>
+                                <ul data-role="listview" data-theme="d" data-divider-theme="d">
+                                    <li data-role="list-divider">Monday, January 21, 2013 <span class="ui-li-count">2</span></li>
+                                    <li><a href="#">
+                                            <h3>Global Onboarding</h3>
+                                            <p>For 200 years, our employees have worked to help businesses grow and enable communities to prosper. Nulla et nisi ultricies mauris tincidunt faucibus quis pulvinar dolor. Maecenas pharetra lacus eu mauris posuere eu tincidunt tellus tincidunt. Nullam sagittis sodales varius. Nunc porta lectus quis nulla vestibulum a iaculis odio aliquet. Donec condimentum condimentum ante vitae scelerisque.
+                                                auctor eu. Nulla et We are proud of our accomplishments and are committed to continuous improvement in how we meet the needs of our customers, employees and communities. We look to you to carry on our legacy of innovation and client service.</p>
+                                            <p class="ui-li-aside"><strong>7.20</strong>AM</p>
+                                        </a>
+                                    </li>
+                                    <li><a href="#">
+                                            <h3>Onboarding service</h3>
+                                            <p>Citi is a global financial services firm, with a recognizable brand, unmatched scale, and the greatest product portfolio. Our breadth and diversity position the company well to take advantage of today's opportunities.</p>
+                                            <p class="ui-li-aside"><strong>6.10</strong>AM</p>
+                                        </a>
+                                    </li>
+                                    <li data-role="list-divider">Sunday, January 20, 2013 <span class="ui-li-count">1</span></li>
+                                    <li><a href="#">
+                                            <h3>New agent login ID request</h3>
+                                            <p>Please vote if you want to participate of Kris Kindle this year.  For those new this is where you pick a name of someone from the team out of a hat and then buy them a small gift to the value of  approx. 10 euro, we will then give the gifts as part of the lunch on the 21st.</p>
+                                            <p class="ui-li-aside"><strong>3.10</strong>PM</p>
+                                        </a>
+                                    </li>
+                                    <li data-role="list-divider">Friday, January 18, 2013 <span class="ui-li-count">3</span></li>
+                                    <li><a href="#">
+                                            <h3>Completion notification</h3>
+                                            <p>You have completed the following training:
+                                                Activity Name: EMEA Improper Electronic Communications Training.</p>
+                                            <p class="ui-li-aside"><strong>6.13</strong>PM</p>
+                                        </a>
+                                    </li>
+                                    <li><a href="#">
+                                            <h3>Electronic Communications</h3>
+                                            <p>As you have set your GLMS language perference to English US, all dates in this notification are in the English US date format. If you wish to change your perference to English UK, go to your GLMS home page, click on "edit preferences" and amend your "regional settings".</p>
+                                            <p class="ui-li-aside"><strong>4.45</strong>PM</p>
+                                        </a>
+                                    </li>
+                                    <li><a href="#">
+                                            <h3>Compliance</h3>
+                                            <p>auctor eu.auctor eu.  posuere eu tincidunt tellus tincidunt. Nullam sagittis sodales varius. Nunc porta lectus quis nulla vestibulum a iaculis odio aliquet..  10 euro, we will then give the gifts as part of the lunch on the 21st.</p>
+                                            <p class="ui-li-aside"><strong>10.35</strong>AM</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><div>Sharepoint</div>
+                                <p class="ui-li-count">8</p>
+                                <ul data-role="listview" data-autodividers="true" data-divider-theme="d">
+                                    <li><a href="#">Cash Securities Tech Fair 2012</a></li>
+                                    <li><a href="#">Cash Securities Tech Fair 2012 Poster</a></li>
+                                    <li><a href="#">Citi_Tech_Fair_QFX_Apr12</a></li>
+                                    <li><a href="#">GMOT Fact sheet</a></li>
+                                    <li><a href="#">QFX_Fact_Sheet-Template</a></li>
+                                    <li><a href="#">Tech Fair 1</a></li>
+                                    <li><a href="#">Tech Fair 2</a></li>
+                                    <li><a href="#">Tech Fair 3</a></li>
+                                </ul>
+                            </li>
+                            <li><div>Training</div>
+                                <p class="ui-li-count">6</p>
+                                <ul>
+                                    <li><a href="microsoft.html">Microsoft Office</a></li>
+                                    <li><a href="#">Java Development</a></li>
+                                    <li><a href="#">Financial Regulatory Compliance</a></li>
+                                    <li><a href="#">Microsoft Office 2 - Advanced Usage</a></li>
+                                    <li><a href="#">Ruby Patterns</a></li>
+                                    <li><a href="#">Occupational First Aid</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <img src="../jquery_demo/images/chris.jpg" />
+                        <h3>Christopher Lawless</h3>
+                        <p>This is Christ's space.</p>
+
+                    </li>
+                    <li>
+                        <img src="../jquery_demo/images/ciaran.jpg" />
+                        <h3>Ciarán Ó hUallacháin</h3>
+                        <p>This is Ciaran's space.</p>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>
+

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>My First JavaScript</h1>
+<p>Click the button to display the date.</p>
+<p id="demo"></p>
+
+<button type="button" onclick="supportsNavigationTiming()">Try it</button>
+
+<script>
+function myFunction()
+{
+document.getElementById("demo").innerHTML = Date();
+}
+function supportsNavigationTiming() {
+	//document.getElementById("demo").innerHTML = !!(window.webkitPerformance && window.webkitPerformance.timing);
+	document.getElementById("demo").innerHTML = !!(window.performance && window.performance.timing);
+  //return !!(window.performance && window.performance.timing);
+}
+</script>
+
+</body>
+</html> 

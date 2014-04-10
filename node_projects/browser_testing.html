@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function loadXMLDoc()
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("myDiv").innerHTML=xmlhttp.status;
+    }
+  }
+xmlhttp.open("Get","https://besnjbbex1001.nam.nsroot.net:4000/10k",false);
+xmlhttp.send();
+}
+
+function runTheTest()
+{
+	var start = new Date().getTime();
+	loadXMLDoc();
+	var end = new Date().getTime();
+	var time = end - start;
+	document.getElementById("executionTime").innerHTML=time;
+	var x = navigator.userAgent;
+	document.getElementById("userAgent").innerHTML=x;
+}
+</script>
+</head>
+<body>
+
+<div id="myDiv"><h2>Display the response code</h2></div>
+<div id="executionTime"><h2>Display the response time</h2></div>
+<div id="userAgent"><h2>Display the User Agent</h2></div>
+<button type="button" onclick="runTheTest()">Display</button>
+
+</body>
+</html>

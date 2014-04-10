@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <script src="jquery-ui-1.10.4/jquery-1.10.2.js"></script>
+        <script src="dist/js/bootstrap.js"></script>
+        <link rel="stylesheet" href="dist/css/bootstrap.css">
+        <style>
+			body {
+                margin: 50px;
+            }
+			#results {
+				width:600px;
+				margin-top: 30px;
+			}
+        </style>
+        <script>
+			var target_page = "https://besnjbbex1001.nam.nsroot.net:4000/10k";
+			var method = "GET";
+			var count_to_run = 10;
+			var round_to_run = 5;
+			
+            function loadXMLDoc()
+            {
+				var target_page_to_test = $('#target_page_to_test').val();
+                if (target_page_to_test != '') {
+                    target_page = target_page_to_test;
+                }
+				 var http_method = $('#http_method').val();
+                if (http_method != '') {
+                    method = http_method;
+                }
+                var how_many_counts_to_run = $('#how_many_counts_to_run').val();
+                if (how_many_counts_to_run != '') {
+                    count_to_run = parseInt(how_many_counts_to_run)
+                }
+				var how_many_rounds_to_run = $('#how_many_rounds_to_run').val();
+                if (how_many_rounds_to_run != '') {
+                    round_to_run = parseInt(how_many_rounds_to_run);
+                }
+				console.log("count_to_run is: " + count_to_run);
+				console.log("round_to_run is: " + round_to_run);
+                var round = new Array(round_to_run);
+                var average_time_array = new Array();
+				var stddev_array = new Array();
+				console.log("rounds is: " + round.length);
+                $.each(round, function(index, value){
+                    var used_time_array = new Array();
+                    var count = new Array(count_to_run);
+                    var total_time = 0;
+                    $.each(count, function(inner_index, inner_value){
+                        var start_time;
+                        var end_time;
+                        $.ajax({
+                            url: target_page,
+                            type: method,
+                            async: false,
+                            beforeSend: function(request)
+                            {
+                                start_time = new Date().getTime();
+                            },
+                            success: function(data)
+                            {
+                                end_time = new Date().getTime();
+                                var used_time = end_time - start_time;
+                                used_time_array[inner_index] = used_time;
+                                total_time += used_time
+                            }
+                        }).done(function(data) {
+                            //$("#response_part").html(data);
+                        });
+                    });
+                    var average_time = total_time/(count.length);
+					var square_sum = 0;
+					for (var i = 0; i < used_time_array.length; i ++) {
+						square_sum += (used_time_array[i] - average_time)*(used_time_array[i] - average_time);
+					}
+					var std_dev = Math.sqrt(square_sum/(used_time_array.length));
+                    average_time_array[index] = average_time;
+					stddev_array[index] = std_dev;
+                });
+                $("#target_page").html(target_page);
+                $("#round").html(round_to_run);
+                $("#count").html(count_to_run);
+				var build_table="<table class=\"table table-bordered\"><thead><tr><th class=\"text-error span4\">round</th><th class=\"text-error span4\">average time</th><th class=\"text-error span4\">standard deviation</th></tr></thead><tbody>";
+                for(var i = 0; i < round_to_run; i ++) {
+					build_table += "<tr><td class=\"span4\">"+ (i + 1) +"</td><td class=\"span4\">"+average_time_array[i] +"</td><td class=\"span4\">"+ stddev_array[i] +"</td></tr>";
+				}
+				build_table += "</tbody></table>";
+				$("#results").html(build_table);
+            }
+			
+			var status;
+			function run() {
+				loadXMLDoc();
+				//clearInterval(status);
+				$("#status").html("finished");
+			}
+			
+			function start() {
+				//status = setInterval(function() {
+					$("#status").html("working...");
+				//}, 2000);
+			}
+        </script>
+    </head>
+    <body>
+        <div><h4 class="text-info">Target page: <span id="target_page"></span></h4></div>
+        <div><h4 class="text-info">Round: <span id="round"></span></h4></div>
+        <div><h4 class="text-info">Count: <span id="count"></span></h4></div>
+		
+		<table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td class="text-error span4">Target page: (default: "https://besnjbbex1001.nam.nsroot.net:4000/10k")</td>
+                    <td class="span8"><input class="input-xxlarge" type="text" id="target_page_to_test"/></td>
+                </tr>
+                <tr>
+                    <td class="text-error">Http method: (default: "GET")</td>
+                    <td><input class="input-small" type="text" id="http_method"/></td>
+                </tr>
+                <tr>
+                    <td class="text-error">Count: (default: "10")</td>
+                    <td><input class="input-small" type="text" id="how_many_counts_to_run"/></td>
+                </tr>
+				<tr>
+                    <td class="text-error">Round: (default: "5")</td>
+                    <td><input class="input-small" type="text" id="how_many_rounds_to_run"/></td>
+                </tr>
+            </tbody>
+        </table>
+		
+        <div onmousedown="start()"><button class="btn btn-large btn-block" type="button" onclick="run()">Load Test</button></div>
+		<div id="status"></div>
+        <div id="results"></div>
+    </body>
+</html>

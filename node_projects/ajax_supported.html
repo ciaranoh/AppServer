@@ -1,0 +1,80 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+
+<!-- If you want to add hyperlinks to this page, add them at the end, after the single existing link,  -->
+<!-- because the redirect option of the checkAJAX() function goes to the first link found in the page. -->
+
+<html>
+<head>
+<title>Check for AJAX support</title>
+<script type="text/javascript">
+// checkAJAX.js
+// Copyright Trevor Turton 2008, http://www.turton.co.za
+// Version 0.1, 2008-11-17
+/** checkAJAX determines whether the browser implements AJAX and the innerHTML attribute.
+ * It takes three arguments, with an optional fourth:
+ * - id is the ID of a DIV that contains a hyperlink that this code will update, if AJAX and innerHTML are supported.
+ *   This DIV should contain a default link to a "No JavaScript support" page
+ * - isAJAXurl is a URL we take the user to if the browser supports both AJAX and innerHTML
+ * - isAJAXtext is the text to appear in the URL if the browser supports both AJAX and innerHTML;
+ *   if the browser redirect doesn't work then the user can click on this URL/text link.
+ * - redirect: if true, automatically redirect the browser to the first link found in the page
+ * If this code isn't executed then the browser doesn't support JavaScript;
+ * there must be a default link in the DIV for the user to click on.
+ */
+function checkAJAX(id, isAJAXurl, isAJAXtext, redirect) {
+	var link = document.getElementById(id);
+	if (link == null) {
+		alert("No valid ID was passed to the checkAJAX function.");
+		return;
+	}
+	if (typeof XMLHttpRequest == "undefined") {  // if the XMLHttpRequest function is undefined, try to define it now.
+		XMLHttpRequest = function() {  // look for ActiveX implementations of AJAX, most recent first.      
+			try { return new ActiveXObject("Msxml2.XMLHTTP.6.0") } catch(e) {}
+			try { return new ActiveXObject("Msxml2.XMLHTTP.3.0") } catch(e) {}
+			try { return new ActiveXObject("Msxml2.XMLHTTP") }     catch(e) {}
+			try { return new ActiveXObject("Microsoft.XMLHTTP") }  catch(e) {}
+			return false;  // failing all of the above, return a pseudo-XMLHttpRequest object with error = true
+		}
+	};
+	var request =  new XMLHttpRequest();  // try to create a web server request
+	if (request != false) {  // if it isn't false then the browser does support AJAX
+		link.innerHTML = '<a href="' + isAJAXurl + '">' + isAJAXtext + '</a>';
+		if (redirect) {  // if the caller wants us to redirect the browser,
+			var newLink = document.links[0];  // get the first hyperlink in the page
+			if (newLink)  // if there is a link (it should be isAJAXurl if the assignemnt to link.innerHTML works)
+				window.location = newLink.href;  // automatically redirect the browser to the isAJAX page.
+		}
+	}
+	delete request;
+}
+</script>
+</head>
+<body onLoad='checkAJAX("checkAJAXid", "isAJAX.html", "AJAX support found, click here to see the next page.", false)'>
+
+<div style="border: thin solid red">This page illustrates the action of a JavaScript function, checkAJAX().
+It can be called by an HTML page to determine whether the browser supports AJAX and the innerHTML attribute,
+both of which DIV_SRC requires for its operation.
+Depending on the result, checkAJAX() can direct the browser to a second page that uses DIV_SRC to present content
+to the browser, or a third page presents the same content in a format suited to browsers that can't use DIV_SRC.
+<br>
+checkAJAX() is invoked with three or four arguments:
+<ol>
+<li>The ID of a DIV or other tag in the document that contains a link to the page that browsers should visit
+if they don't implement AJAX or the innerHTML attribute.</li>
+<li>The URL of the page that the browser should visit if it supports both AJAX and the innerHTML attribute.</li>
+<li>The text to appear in the URL if the browser supports both AJAX and innerHTML</li>
+<li>If true, checkAJAX() automatically redirects the browser to the first link found in this page.
+If the browser supports AJAX and innerHTML then this should be the isAJAXurl; otherwise the default link.</li>
+</ol>
+If checkAJAX() runs then the browser supports JavaScript; if not then it doesn't.
+If it does run then it checks to see if any of the functions that implement AJAX are available in the browser.
+If one is, checkAJAX() attempts to overwrite the link below with a new link to a page that reports success.
+It does this by assigning a new link to the innerHTML attribute of the ID passed to it.
+If the browser doesn't support the innerHTML attribute then the link initially supplied will remain visible.
+If you wish to use this function for your own content, delete the content above the link and customise
+the URLs and their text to suit your needs.</div>
+
+<!-- The default link follows; it gets overwritten if the browser can do AJAX and innerHTML -->
+<p id="checkAJAXid">No AJAX support found, <a href="noAJAX.html">please click here for the next page</a>.</p>
+</body>
+</html>
